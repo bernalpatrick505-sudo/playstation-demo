@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlayStyle – Demo interactiva</title>
+  <style>
+    :root{
+      --blue:#0b5cff;
+      --dark:#0a0a0a;
+      --gray:#1b1b1b;
+      --text:#f5f5f5;
+      --muted:#b5b5b5;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; background:linear-gradient(180deg,#000,#0a0a0a 40%,#000); color:var(--text);
+    }
+    header{
+      position:sticky; top:0; z-index:10; background:rgba(0,0,0,.7); backdrop-filter: blur(10px);
+      display:flex; align-items:center; justify-content:space-between; padding:12px 24px; border-bottom:1px solid #111;
+    }
+    .logo{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.5px}
+    .logo .dot{width:28px;height:28px;border-radius:8px;background:var(--blue)}
+    nav a{color:var(--text); text-decoration:none; margin:0 10px; opacity:.9}
+    nav a:hover{opacity:1; text-decoration:underline}
+    .cta{background:var(--blue); border:none; color:#fff; padding:10px 14px; border-radius:10px; cursor:pointer}
+
+    .hero{
+      position:relative; height:70vh; display:grid; place-items:center; overflow:hidden
+    }
+    .hero video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.6)}
+    .hero .content{position:relative; max-width:900px; padding:24px; text-align:center}
+    .hero h1{font-size:clamp(28px,5vw,56px); margin:0 0 12px}
+    .hero p{color:var(--muted)}
+
+    .section{padding:56px 24px; max-width:1200px; margin:auto}
+    .section h2{margin:0 0 18px}
+
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px}
+    .card{
+      background:linear-gradient(180deg,#121212,#0b0b0b); border:1px solid #1a1a1a; border-radius:18px; overflow:hidden; cursor:pointer; transition:.25s transform, .25s box-shadow
+    }
+    .card:hover{transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.4)}
+    .thumb{position:relative; aspect-ratio:16/9; background:#000}
+    .thumb img{width:100%; height:100%; object-fit:cover}
+    .badge{position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,.7); padding:6px 10px; border-radius:999px; font-size:12px}
+    .card .info{padding:14px}
+    .info h3{margin:0 0 6px}
+    .info p{margin:0; color:var(--muted); font-size:14px}
+
+    .carousel{display:flex; gap:16px; overflow:auto; scroll-snap-type:x mandatory}
+    .carousel .card{min-width:320px; scroll-snap-align:start}
+
+    footer{border-top:1px solid #111; padding:24px; text-align:center; color:var(--muted)}
+
+    /* Modal */
+    .modal{position:fixed; inset:0; background:rgba(0,0,0,.8); display:none; place-items:center; padding:24px}
+    .modal.active{display:grid}
+    .modal .box{background:#000; border:1px solid #222; border-radius:16px; max-width:960px; width:100%}
+    .modal header{position:static; background:#000; border:none}
+    .modal iframe{width:100%; height:54vh; border:0; border-radius:0 0 16px 16px}
+    .close{background:#222; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer}
+
+    .disclaimer{font-size:12px; color:#9a9a9a}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><div class="dot"></div> PlayStyle (Demo IA)</div>
+    <nav>
+      <a href="#juegos">Juegos</a>
+      <a href="#ps5">PS5</a>
+      <a href="#plus">Plus</a>
+    </nav>
+    <button class="cta">Iniciar sesión</button>
+  </header>
+
+  <section class="hero">
+    <video autoplay muted loop playsinline>
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
+    </video>
+    <div class="content">
+      <h1>Vive el juego. Siente la nueva generación.</h1>
+      <p>Demo interactiva creada por IA. Experiencia visual, videos y transiciones.</p>
+      <button class="cta" onclick="scrollToGames()">Explorar juegos</button>
+    </div>
+  </section>
+
+  <section id="juegos" class="section">
+    <h2>Juegos destacados</h2>
+    <div class="grid">
+      <div class="card" onclick="openVideo('https://www.youtube.com/embed/qPNiIeKMHyg')">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1611605698335-21e89c5c0a3a"/><span class="badge">Acción</span></div>
+        <div class="info"><h3>God of War Ragnarök</h3><p>Aventura épica nórdica.</p></div>
+      </div>
+      <div class="card" onclick="openVideo('https://www.youtube.com/embed/1O6Qstncpnc')">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f"/><span class="badge">RPG</span></div>
+        <div class="info"><h3>Horizon Forbidden West</h3><p>Explora un mundo salvaje.</p></div>
+      </div>
+      <div class="card" onclick="openVideo('https://www.youtube.com/embed/JvJ0hQm8E2E')">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1605902711622-0c5a7a2c89b3"/><span class="badge">Carreras</span></div>
+        <div class="info"><h3>Gran Turismo 7</h3><p>Simulación definitiva.</p></div>
+      </div>
+      <div class="card" onclick="openVideo('https://www.youtube.com/embed/t0haeZ9Fh90')">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420"/><span class="badge">Superhéroes</span></div>
+        <div class="info"><h3>Spider‑Man 2</h3><p>Balancea la ciudad.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ps5" class="section">
+    <h2>PS5</h2>
+    <div class="carousel">
+      <div class="card"><div class="thumb"><img src="https://images.unsplash.com/photo-1605902711622-8c6d4a9c6c2b"></div><div class="info"><h3>Gráficos 4K</h3><p>Ray tracing y 60fps.</p></div></div>
+      <div class="card"><div class="thumb"><img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d9"></div><div class="info"><h3>SSD ultrarrápido</h3><p>Cargas casi instantáneas.</p></div></div>
+      <div class="card"><div class="thumb"><img src="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff"></div><div class="info"><h3>DualSense</h3><p>Respuesta háptica.</p></div></div>
+    </div>
+  </section>
+
+  <section id="plus" class="section">
+    <h2>PlayStyle Plus</h2>
+    <div class="grid">
+      <div class="card"><div class="info"><h3>Essential</h3><p>Multijugador online.</p></div></div>
+      <div class="card"><div class="info"><h3>Extra</h3><p>Catálogo de juegos.</p></div></div>
+      <div class="card"><div class="info"><h3>Premium</h3><p>Clásicos y pruebas.</p></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="disclaimer">⚠️ Demo no oficial creada para mostrar capacidades de una IA. Marcas y títulos pertenecen a sus respectivos dueños.</p>
+  </footer>
+
+  <div id="modal" class="modal" onclick="closeIfBg(event)">
+    <div class="box">
+      <header>
+        <button class="close" onclick="closeModal()">Cerrar</button>
+      </header>
+      <iframe id="player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const player = document.getElementById('player');
+    function openVideo(url){ player.src = url + '?autoplay=1'; modal.classList.add('active'); }
+    function closeModal(){ modal.classList.remove('active'); player.src=''; }
+    function closeIfBg(e){ if(e.target===modal) closeModal(); }
+    function scrollToGames(){ document.getElementById('juegos').scrollIntoView({behavior:'smooth'}); }
+  </script>
+</body>
+</html>
